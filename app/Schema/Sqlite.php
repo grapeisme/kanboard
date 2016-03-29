@@ -1186,7 +1186,7 @@ function version_5(PDO $pdo)
 
 function version_4(PDO $pdo)
 {
-    $pdo->exec("ALTER TABLE config ADD COLUMN timezone TEXT DEFAULT 'UTC'");
+    $pdo->exec("ALTER TABLE config ADD COLUMN timezone TEXT DEFAULT 'Asia/Shanghai'");
 }
 
 function version_3(PDO $pdo)
@@ -1204,7 +1204,7 @@ function version_1(PDO $pdo)
 {
     $pdo->exec("
         CREATE TABLE config (
-            language TEXT DEFAULT 'en_US',
+            language TEXT DEFAULT 'zh_CN',
             webhooks_token TEXT DEFAULT ''
         )
     ");

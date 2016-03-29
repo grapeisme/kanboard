@@ -97,7 +97,8 @@ class SessionManager extends Base
         ini_set('session.use_trans_sid', '0');
 
         // Enable strict mode
-        ini_set('session.use_strict_mode', '1');
+        //ini_set('session.use_strict_mode', '1');
+        ini_set('session.use_strict_mode', '0');
 
         // Better session hash
         ini_set('session.hash_function', '1'); // 'sha512' is not compatible with FreeBSD, only MD5 '0' and SHA-1 '1' seems to work
