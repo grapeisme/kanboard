@@ -25,7 +25,7 @@
     <?= $this->form->checkbox('append', t('Append filter (instead of replacement)'), 1, $values['append'] == 1) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue">
         <?= t('or') ?>
         <?= $this->url->link(t('cancel'), 'customfilter', 'index', array('project_id' => $project['id']), false, 'close-popover') ?>
     </div>

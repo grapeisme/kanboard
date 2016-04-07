@@ -1,20 +1,13 @@
-Kanboard.CompareHoursColumnChart = function(app) {
+function CompareHoursColumnChart(app) {
     this.app = app;
-};
+}
 
-Kanboard.CompareHoursColumnChart.prototype.execute = function() {
-    if (this.app.hasId("analytic-compare-hours")) {
-        this.show();
-    }
-};
-
-Kanboard.CompareHoursColumnChart.prototype.show = function() {
-    var chart = $("#chart");
-    var metrics = chart.data("metrics");
-    var labelOpen = chart.data("label-open");
-    var labelClosed = chart.data("label-closed");
-    var spent = [chart.data("label-spent")];
-    var estimated = [chart.data("label-estimated")];
+CompareHoursColumnChart.prototype.execute = function() {
+    var metrics = $("#chart").data("metrics");
+    var labelOpen = $("#chart").data("label-open");
+    var labelClosed = $("#chart").data("label-closed");
+    var spent = [$("#chart").data("label-spent")];
+    var estimated = [$("#chart").data("label-estimated")];
     var categories = [];
 
     for (var status in metrics) {

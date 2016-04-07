@@ -3,7 +3,7 @@
     <?= $this->hook->render('template:auth:login-form:before') ?>
 
     <?php if (isset($errors['login'])): ?>
-        <p class="alert alert-error"><?= $this->text->e($errors['login']) ?></p>
+        <p class="alert alert-error"><?= $this->e($errors['login']) ?></p>
     <?php endif ?>
 
     <?php if (! HIDE_LOGIN_FORM): ?>
@@ -28,13 +28,16 @@
         <?php endif ?>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-blue"><?= t('Sign in') ?></button>
+            <input type="submit" value="<?= t('Sign in') ?>" class="btn btn-blue"/>
         </div>
         <?php if ($this->app->config('password_reset') == 1): ?>
             <div class="reset-password">
                 <?= $this->url->link(t('Forgot password?'), 'PasswordReset', 'create') ?>
             </div>
         <?php endif ?>
+        <div style="clear:both; margin-left:15%; margin-top: 50%; color:grey">
+            <?php echo CONTACT_INFO; ?>
+        </div>
     </form>
     <?php endif ?>
 

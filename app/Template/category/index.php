@@ -9,7 +9,7 @@
     </tr>
     <?php foreach ($categories as $category_id => $category_name): ?>
     <tr>
-        <td><?= $this->text->e($category_name) ?></td>
+        <td><?= $this->e($category_name) ?></td>
         <td>
             <div class="dropdown">
             <a href="#" class="dropdown-menu dropdown-menu-link-icon"><i class="fa fa-cog fa-fw"></i><i class="fa fa-caret-down"></i></a>
@@ -40,6 +40,6 @@
     <?= $this->form->text('name', $values, $errors, array('autofocus', 'required', 'maxlength="50"')) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
     </div>
 </form>

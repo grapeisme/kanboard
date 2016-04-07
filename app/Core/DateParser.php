@@ -12,9 +12,6 @@ use DateTime;
  */
 class DateParser extends Base
 {
-    const DATE_FORMAT = 'm/d/Y';
-    const DATE_TIME_FORMAT = 'm/d/Y H:i';
-
     /**
      * List of time formats
      *
@@ -204,7 +201,7 @@ class DateParser extends Base
     }
 
     /**
-     * Get a timestamp from an ISO date format
+     * Get a timetstamp from an ISO date format
      *
      * @access public
      * @param  string   $value

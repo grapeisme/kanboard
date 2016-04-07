@@ -15,18 +15,15 @@ class ProjectOverview extends Base
      */
     public function show()
     {
-        $project = $this->getProject();
-        $this->project->getColumnStats($project);
+        $params = $this->getProjectFilters('ProjectOverview', 'show');
+        $params['users'] = $this->projectUserRole->getAllUsersGroupedByRole($params['project']['id']);
+        $params['roles'] = $this->role->getProjectRoles();
+        $params['events'] = $this->projectActivity->getProject($params['project']['id'], 10);
+        $params['images'] = $this->projectFile->getAllImages($params['project']['id']);
+        $params['files'] = $this->projectFile->getAllDocuments($params['project']['id']);
 
-        $this->response->html($this->helper->layout->app('project_overview/show', array(
-            'project' => $project,
-            'title' => $project['name'],
-            'description' => $this->helper->projectHeader->getDescription($project),
-            'users' => $this->projectUserRole->getAllUsersGroupedByRole($project['id']),
-            'roles' => $this->role->getProjectRoles(),
-            'events' => $this->projectActivity->getProject($project['id'], 10),
-            'images' => $this->projectFile->getAllImages($project['id']),
-            'files' => $this->projectFile->getAllDocuments($project['id']),
-        )));
+        $this->project->getColumnStats($params['project']);
+
+        $this->response->html($this->helper->layout->app('project_overview/show', $params));
     }
 }

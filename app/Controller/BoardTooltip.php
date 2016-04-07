@@ -77,7 +77,6 @@ class BoardTooltip extends Base
         $task = $this->getTask();
 
         $this->response->html($this->template->render('board/tooltip_comments', array(
-            'task' => $task,
             'comments' => $this->comment->getAll($task['id'], $this->userSession->getCommentSorting())
         )));
     }

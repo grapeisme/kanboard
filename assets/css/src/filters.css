@@ -1,20 +1,8 @@
-/* project header */
 .project-header {
     margin-top: 8px;
     margin-bottom: 20px;
 }
 
-.action-menu {
-    color: #333;
-    text-decoration: none;
-}
-
-.action-menu:hover,
-.action-menu:focus {
-    text-decoration: underline;
-}
-
-/* search box */
 .filter-box {
     display: inline-block;
     position: relative;
@@ -34,7 +22,7 @@
     margin: 0;
     font-size: 16px;
     height: 26px;
-    border-color: #ddd;
+    border-color: #dedede;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     vertical-align: top;
@@ -48,10 +36,9 @@
 }
 
 .filter-box div.dropdown {
-    background: #fafafa;
     display: inline-block;
     font-size: 16px;
-    border: 1px solid #ddd;
+    border: 1px solid #dedede;
     border-left: none;
     margin: 0;
     padding: 0;

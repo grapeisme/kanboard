@@ -31,7 +31,6 @@ class Auth extends Base
         } elseif ($this->isAppAuthenticated($username, $password)) {
             $this->checkProcedurePermission(false, $method);
         } else {
-            $this->logger->error('API authentication failure for '.$username);
             throw new AuthenticationFailure('Wrong credentials');
         }
     }

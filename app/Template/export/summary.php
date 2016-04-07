@@ -19,6 +19,6 @@
     <div class="form-help"><?= t('Others formats accepted: %s and %s', date('Y-m-d'), date('Y_m_d')) ?></div>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Execute') ?></button>
+        <input type="submit" value="<?= t('Execute') ?>" class="btn btn-blue">
     </div>
 </form>

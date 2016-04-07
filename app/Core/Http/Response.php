@@ -14,24 +14,6 @@ use Kanboard\Core\Csv;
 class Response extends Base
 {
     /**
-     * Send headers to cache a resource
-     *
-     * @access public
-     * @param  integer $duration
-     * @param  string  $etag
-     */
-    public function cache($duration, $etag = '')
-    {
-        header('Pragma: cache');
-        header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $duration) . ' GMT');
-        header('Cache-Control: public, max-age=' . $duration);
-
-        if ($etag) {
-            header('ETag: "' . $etag . '"');
-        }
-    }
-
-    /**
      * Send no cache headers
      *
      * @access public

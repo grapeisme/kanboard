@@ -1,10 +1,10 @@
-Kanboard.FileUpload = function(app) {
+function FileUpload(app) {
     this.app = app;
     this.files = [];
     this.currentFile = 0;
-};
+}
 
-Kanboard.FileUpload.prototype.onPopoverOpened = function() {
+FileUpload.prototype.listen = function() {
     var dropzone = document.getElementById("file-dropzone");
     var self = this;
 
@@ -12,7 +12,7 @@ Kanboard.FileUpload.prototype.onPopoverOpened = function() {
         dropzone.ondragover = dropzone.ondragenter = function(e) {
             e.stopPropagation();
             e.preventDefault();
-        };
+        }
 
         dropzone.ondrop = function(e) {
             e.stopPropagation();
@@ -20,7 +20,7 @@ Kanboard.FileUpload.prototype.onPopoverOpened = function() {
             self.files = e.dataTransfer.files;
             self.show();
             $("#file-error-max-size").hide();
-        };
+        }
 
         $(document).on("click", "#file-browser", function(e) {
             e.preventDefault();
@@ -41,7 +41,7 @@ Kanboard.FileUpload.prototype.onPopoverOpened = function() {
     }
 };
 
-Kanboard.FileUpload.prototype.show = function() {
+FileUpload.prototype.show = function() {
     $("#file-list").remove();
 
     if (this.files.length > 0) {
@@ -69,7 +69,7 @@ Kanboard.FileUpload.prototype.show = function() {
     }
 };
 
-Kanboard.FileUpload.prototype.checkFiles = function() {
+FileUpload.prototype.checkFiles = function() {
     var max = parseInt($("#file-dropzone").data("max-size"));
 
     for (var i = 0; i < this.files.length; i++) {
@@ -84,13 +84,13 @@ Kanboard.FileUpload.prototype.checkFiles = function() {
     this.uploadFiles();
 };
 
-Kanboard.FileUpload.prototype.uploadFiles = function() {
+FileUpload.prototype.uploadFiles = function() {
     if (this.files.length > 0) {
         this.uploadFile(this.files[this.currentFile]);
     }
 };
 
-Kanboard.FileUpload.prototype.uploadFile = function(file) {
+FileUpload.prototype.uploadFile = function(file) {
     var dropzone = document.getElementById("file-dropzone");
     var url = dropzone.dataset.url;
     var xhr = new XMLHttpRequest();
@@ -104,22 +104,21 @@ Kanboard.FileUpload.prototype.uploadFile = function(file) {
     xhr.send(fd);
 };
 
-Kanboard.FileUpload.prototype.updateProgress = function(e) {
+FileUpload.prototype.updateProgress = function(e) {
     if (e.lengthComputable) {
         $("#file-progress-" + this.currentFile).val(e.loaded / e.total);
         $("#file-percentage-" + this.currentFile).text('(' + Math.floor((e.loaded / e.total) * 100) + '%)');
     }
 };
 
-Kanboard.FileUpload.prototype.transferComplete = function() {
+FileUpload.prototype.transferComplete = function() {
     this.currentFile++;
 
     if (this.currentFile < this.files.length) {
         this.uploadFile(this.files[this.currentFile]);
     } else {
-        var uploadButton = $("#file-upload-button");
-        uploadButton.prop("disabled", true);
-        uploadButton.parent().hide();
+        $("#file-upload-button").prop("disabled", true);
+        $("#file-upload-button").parent().hide();
         $("#file-done").show();
     }
 };

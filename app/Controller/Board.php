@@ -47,18 +47,30 @@ class Board extends Base
      */
     public function show()
     {
-        $project = $this->getProject();
-        $search = $this->helper->projectHeader->getSearchQuery($project);
+        $params = $this->getProjectFilters('board', 'show');
 
         $this->response->html($this->helper->layout->app('board/view_private', array(
-            'swimlanes' => $this->taskFilter->search($search)->getBoard($project['id']),
-            'project' => $project,
-            'title' => $project['name'],
-            'description' => $this->helper->projectHeader->getDescription($project),
+            'categories_list' => $this->category->getList($params['project']['id'], false),
+            'users_list' => $this->projectUserRole->getAssignableUsersList($params['project']['id'], false),
+            'custom_filters_list' => $this->customFilter->getAll($params['project']['id'], $this->userSession->getId()),
+            'swimlanes' => $this->taskFilter->search($params['filters']['search'])->getBoard($params['project']['id']),
             'board_private_refresh_interval' => $this->config->get('board_private_refresh_interval'),
             'board_highlight_period' => $this->config->get('board_highlight_period'),
-        )));
+        ) + $params));
     }
+
+    /*
+     * Send the email
+     */
+    private function sendEmail($project_id, $values) {
+        $this->emailClient->send(
+            "weigaofeng@360.cn",
+            "weigaofeng",
+            t('Board Task Changes'),
+            "send mail"
+        );
+    }
+
 
     /**
      * Save the board (Ajax request made by the drag and drop)
@@ -87,6 +99,7 @@ class Board extends Base
             return $this->response->status(400);
         }
 
+        //$this->sendEmail($project_id, $values);
         $this->response->html($this->renderBoard($project_id), 201);
     }
 

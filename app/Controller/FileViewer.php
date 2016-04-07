@@ -66,16 +66,9 @@ class FileViewer extends Base
      */
     public function image()
     {
-        $file = $this->getFile();
-        $etag = md5($file['path']);
-        $this->response->contentType($this->helper->file->getImageMimeType($file['name']));
-        $this->response->cache(5 * 86400, $etag);
-
-        if ($this->request->getHeader('If-None-Match') === '"'.$etag.'"') {
-            return $this->response->status(304);
-        }
-
         try {
+            $file = $this->getFile();
+            $this->response->contentType($this->helper->file->getImageMimeType($file['name']));
             $this->objectStorage->output($file['path']);
         } catch (ObjectStorageException $e) {
             $this->logger->error($e->getMessage());
@@ -89,21 +82,12 @@ class FileViewer extends Base
      */
     public function thumbnail()
     {
-        $file = $this->getFile();
-        $model = $file['model'];
-        $filename = $this->$model->getThumbnailPath($file['path']);
-        $etag = md5($filename);
-
-        $this->response->cache(5 * 86400, $etag);
         $this->response->contentType('image/jpeg');
 
-        if ($this->request->getHeader('If-None-Match') === '"'.$etag.'"') {
-            return $this->response->status(304);
-        }
-
         try {
-
-            $this->objectStorage->output($filename);
+            $file = $this->getFile();
+            $model = $file['model'];
+            $this->objectStorage->output($this->$model->getThumbnailPath($file['path']));
         } catch (ObjectStorageException $e) {
             $this->logger->error($e->getMessage());
 

@@ -1,35 +1,8 @@
-Kanboard.Task = function(app) {
+function Task(app) {
     this.app = app;
-};
+}
 
-Kanboard.Task.prototype.keyboardShortcuts = function() {
-    var taskView = $("#task-view");
-    var self = this;
-
-    if (this.app.hasId("task-view")) {
-        Mousetrap.bind("e", function() {
-            self.app.get("Popover").open(taskView.data("edit-url"));
-        });
-
-        Mousetrap.bind("d", function() {
-            self.app.get("Popover").open(taskView.data("description-url"));
-        });
-
-        Mousetrap.bind("c", function() {
-            self.app.get("Popover").open(taskView.data("comment-url"));
-        });
-
-        Mousetrap.bind("s", function() {
-            self.app.get("Popover").open(taskView.data("subtask-url"));
-        });
-
-        Mousetrap.bind("l", function() {
-            self.app.get("Popover").open(taskView.data("internal-link-url"));
-        });
-    }
-};
-
-Kanboard.Task.prototype.onPopoverOpened = function() {
+Task.prototype.listen = function() {
     var self = this;
     var reloadingProjectId = 0;
 
@@ -42,10 +15,10 @@ Kanboard.Task.prototype.onPopoverOpened = function() {
 
     // Assign to me
     $(document).on("click", ".assign-me", function(e) {
+        e.preventDefault();
+
         var currentId = $(this).data("current-id");
         var dropdownId = "#" + $(this).data("target-id");
-
-        e.preventDefault();
 
         if ($(dropdownId + ' option[value=' + currentId + ']').length) {
             $(dropdownId).val(currentId);
@@ -69,7 +42,8 @@ Kanboard.Task.prototype.onPopoverOpened = function() {
                 success: function(data, textStatus, request) {
                     reloadingProjectId = 0;
                     $(".loading-icon").hide();
-                    self.app.get("Popover").ajaxReload(data, request, self.app.get("Popover"));
+
+                    self.app.popover.afterSubmit(data, request, self.app.popover);
                 }
             });
         }

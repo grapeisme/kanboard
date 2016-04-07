@@ -21,7 +21,7 @@ class TransitionExport extends Base
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $data = $this->transitionExport->export(
+        $data = $this->transition->export(
             $input->getArgument('project_id'),
             $input->getArgument('start_date'),
             $input->getArgument('end_date')

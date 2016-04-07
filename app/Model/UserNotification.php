@@ -117,20 +117,23 @@ class UserNotification extends Base
      */
     public function saveSettings($user_id, array $values)
     {
-        $types = empty($values['notification_types']) ? array() : array_keys($values['notification_types']);
+        $this->db->startTransaction();
 
-        if (! empty($types)) {
+        if (isset($values['notifications_enabled']) && $values['notifications_enabled'] == 1) {
             $this->enableNotification($user_id);
+
+            $filter = empty($values['notifications_filter']) ? UserNotificationFilter::FILTER_BOTH : $values['notifications_filter'];
+            $projects = empty($values['notification_projects']) ? array() : array_keys($values['notification_projects']);
+            $types = empty($values['notification_types']) ? array() : array_keys($values['notification_types']);
+
+            $this->userNotificationFilter->saveFilter($user_id, $filter);
+            $this->userNotificationFilter->saveSelectedProjects($user_id, $projects);
+            $this->userNotificationType->saveSelectedTypes($user_id, $types);
         } else {
             $this->disableNotification($user_id);
         }
 
-        $filter = empty($values['notifications_filter']) ? UserNotificationFilter::FILTER_BOTH : $values['notifications_filter'];
-        $project_ids = empty($values['notification_projects']) ? array() : array_keys($values['notification_projects']);
-
-        $this->userNotificationFilter->saveFilter($user_id, $filter);
-        $this->userNotificationFilter->saveSelectedProjects($user_id, $project_ids);
-        $this->userNotificationType->saveSelectedTypes($user_id, $types);
+        $this->db->closeTransaction();
     }
 
     /**

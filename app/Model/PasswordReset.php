@@ -20,7 +20,7 @@ class PasswordReset extends Base
     /**
      * Token duration (30 minutes)
      *
-     * @var integer
+     * @var string
      */
     const DURATION = 1800;
 

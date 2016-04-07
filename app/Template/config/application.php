@@ -30,9 +30,7 @@
     <?= $this->form->label(t('Custom Stylesheet'), 'application_stylesheet') ?>
     <?= $this->form->textarea('application_stylesheet', $values, $errors) ?>
 
-    <?= $this->hook->render('template:config:application', array('values' => $values, 'errors' => $errors)) ?>
-
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue">
     </div>
 </form>

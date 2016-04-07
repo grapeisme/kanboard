@@ -1,43 +1,12 @@
-Kanboard.Swimlane = function(app) {
+function Swimlane(app) {
     this.app = app;
-};
+}
 
-Kanboard.Swimlane.prototype.execute = function() {
-    if ($(".swimlanes-table").length) {
-        this.dragAndDrop();
-    }
-};
-
-Kanboard.Swimlane.prototype.listen = function() {
-    var self = this;
-
-    $(document).on('click', ".board-swimlane-toggle", function(e) {
-        e.preventDefault();
-
-        var swimlaneId = $(this).data('swimlane-id');
-
-        if (self.isCollapsed(swimlaneId)) {
-            self.expand(swimlaneId);
-        }
-        else {
-            self.collapse(swimlaneId);
-        }
-    });
-};
-
-Kanboard.Swimlane.prototype.onBoardRendered = function() {
-    var swimlaneIds = this.getAllCollapsed();
-
-    for (var i = 0; i < swimlaneIds.length; i++) {
-        this.collapse(swimlaneIds[i]);
-    }
-};
-
-Kanboard.Swimlane.prototype.getStorageKey = function() {
+Swimlane.prototype.getStorageKey = function() {
     return "hidden_swimlanes_" + $("#board").data("project-id");
 };
 
-Kanboard.Swimlane.prototype.expand = function(swimlaneId) {
+Swimlane.prototype.expand = function(swimlaneId) {
     var swimlaneIds = this.getAllCollapsed();
     var index = swimlaneIds.indexOf(swimlaneId);
 
@@ -53,7 +22,7 @@ Kanboard.Swimlane.prototype.expand = function(swimlaneId) {
     $('.show-icon-swimlane-' + swimlaneId).css('display', 'none');
 };
 
-Kanboard.Swimlane.prototype.collapse = function(swimlaneId) {
+Swimlane.prototype.collapse = function(swimlaneId) {
     var swimlaneIds = this.getAllCollapsed();
 
     if (swimlaneIds.indexOf(swimlaneId) < 0) {
@@ -67,15 +36,41 @@ Kanboard.Swimlane.prototype.collapse = function(swimlaneId) {
     $('.show-icon-swimlane-' + swimlaneId).css('display', 'inline');
 };
 
-Kanboard.Swimlane.prototype.isCollapsed = function(swimlaneId) {
+Swimlane.prototype.isCollapsed = function(swimlaneId) {
     return this.getAllCollapsed().indexOf(swimlaneId) > -1;
 };
 
-Kanboard.Swimlane.prototype.getAllCollapsed = function() {
+Swimlane.prototype.getAllCollapsed = function() {
     return JSON.parse(localStorage.getItem(this.getStorageKey())) || [];
 };
 
-Kanboard.Swimlane.prototype.dragAndDrop = function() {
+Swimlane.prototype.refresh = function() {
+    var swimlaneIds = this.getAllCollapsed();
+
+    for (var i = 0; i < swimlaneIds.length; i++) {
+        this.collapse(swimlaneIds[i]);
+    }
+};
+
+Swimlane.prototype.listen = function() {
+    var self = this;
+    self.dragAndDrop();
+
+    $(document).on('click', ".board-swimlane-toggle", function(e) {
+        e.preventDefault();
+
+        var swimlaneId = $(this).data('swimlane-id');
+
+        if (self.isCollapsed(swimlaneId)) {
+            self.expand(swimlaneId);
+        }
+        else {
+            self.collapse(swimlaneId);
+        }
+    });
+};
+
+Swimlane.prototype.dragAndDrop = function() {
     var self = this;
 
     $(".draggable-row-handle").mouseenter(function() {
@@ -105,7 +100,7 @@ Kanboard.Swimlane.prototype.dragAndDrop = function() {
     }).disableSelection();
 };
 
-Kanboard.Swimlane.prototype.savePosition = function(swimlaneId, position) {
+Swimlane.prototype.savePosition = function(swimlaneId, position) {
     var url = $(".swimlanes-table").data("save-position-url");
     var self = this;
 

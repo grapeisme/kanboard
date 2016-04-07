@@ -76,8 +76,6 @@ class Column extends Base
      * Display a form to edit a column
      *
      * @access public
-     * @param array $values
-     * @param array $errors
      */
     public function edit(array $values = array(), array $errors = array())
     {

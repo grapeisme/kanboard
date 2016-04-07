@@ -3,36 +3,13 @@
 namespace Kanboard\Core;
 
 /**
- * Template
+ * Template class
  *
  * @package core
  * @author  Frederic Guillot
- *
- * @property \Kanboard\Helper\AppHelper               $app
- * @property \Kanboard\Helper\AssetHelper             $asset
- * @property \Kanboard\Helper\DateHelper              $dt
- * @property \Kanboard\Helper\FileHelper              $file
- * @property \Kanboard\Helper\FormHelper              $form
- * @property \Kanboard\Helper\HookHelper              $hook
- * @property \Kanboard\Helper\ModelHelper             $model
- * @property \Kanboard\Helper\SubtaskHelper           $subtask
- * @property \Kanboard\Helper\TaskHelper              $task
- * @property \Kanboard\Helper\TextHelper              $text
- * @property \Kanboard\Helper\UrlHelper               $url
- * @property \Kanboard\Helper\UserHelper              $user
- * @property \Kanboard\Helper\LayoutHelper            $layout
- * @property \Kanboard\Helper\ProjectHeaderHelper     $projectHeader
  */
-class Template
+class Template extends Helper
 {
-    /**
-     * Helper object
-     *
-     * @access private
-     * @var Helper
-     */
-    private $helper;
-
     /**
      * List of template overrides
      *
@@ -42,26 +19,47 @@ class Template
     private $overrides = array();
 
     /**
-     * Template constructor
+     * Rendering start time
      *
-     * @access public
-     * @param  Helper $helper
+     * @access private
+     * @var float
      */
-    public function __construct(Helper $helper)
+    private $startTime = 0;
+
+    /**
+     * Total rendering time
+     *
+     * @access private
+     * @var float
+     */
+    private $renderingTime = 0;
+
+    /**
+     * Method executed before the rendering
+     *
+     * @access protected
+     * @param  string $template
+     */
+    protected function beforeRender($template)
     {
-        $this->helper = $helper;
+        if (DEBUG) {
+            $this->startTime = microtime(true);
+        }
     }
 
     /**
-     * Expose helpers with magic getter
+     * Method executed after the rendering
      *
-     * @access public
-     * @param  string $helper
-     * @return mixed
+     * @access protected
+     * @param  string $template
      */
-    public function __get($helper)
+    protected function afterRender($template)
     {
-        return $this->helper->getHelper($helper);
+        if (DEBUG) {
+            $duration = microtime(true) - $this->startTime;
+            $this->renderingTime += $duration;
+            $this->container['logger']->debug('Rendering '.$template.' in '.$duration.'s, total='.$this->renderingTime);
+        }
     }
 
     /**
@@ -78,10 +76,33 @@ class Template
      */
     public function render($__template_name, array $__template_args = array())
     {
+        $this->beforeRender($__template_name);
+
         extract($__template_args);
         ob_start();
         include $this->getTemplateFile($__template_name);
-        return ob_get_clean();
+        $html = ob_get_clean();
+
+        $this->afterRender($__template_name);
+
+        return $html;
+    }
+
+    /**
+     * Render a page layout
+     *
+     * @access public
+     * @param  string   $template_name   Template name
+     * @param  array    $template_args   Key/value map
+     * @param  string   $layout_name     Layout name
+     * @return string
+     */
+    public function layout($template_name, array $template_args = array(), $layout_name = 'layout')
+    {
+        return $this->render(
+            $layout_name,
+            $template_args + array('content_for_layout' => $this->render($template_name, $template_args))
+        );
     }
 
     /**
@@ -99,26 +120,25 @@ class Template
     /**
      * Find template filename
      *
-     * Core template: 'task/show' or 'kanboard:task/show'
-     * Plugin template: 'myplugin:task/show'
+     * Core template name: 'task/show'
+     * Plugin template name: 'myplugin:task/show'
      *
      * @access public
-     * @param  string  $template
+     * @param  string  $template_name
      * @return string
      */
-    public function getTemplateFile($template)
+    public function getTemplateFile($template_name)
     {
-        $plugin = '';
-        $template = isset($this->overrides[$template]) ? $this->overrides[$template] : $template;
+        $template_name = isset($this->overrides[$template_name]) ? $this->overrides[$template_name] : $template_name;
 
-        if (strpos($template, ':') !== false) {
-            list($plugin, $template) = explode(':', $template);
+        if (strpos($template_name, ':') !== false) {
+            list($plugin, $template) = explode(':', $template_name);
+            $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'plugins';
+            $path .= DIRECTORY_SEPARATOR.ucfirst($plugin).DIRECTORY_SEPARATOR.'Template'.DIRECTORY_SEPARATOR.$template.'.php';
+        } else {
+            $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Template'.DIRECTORY_SEPARATOR.$template_name.'.php';
         }
 
-        if ($plugin !== 'kanboard' && $plugin !== '') {
-            return implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', 'plugins', ucfirst($plugin), 'Template', $template.'.php'));
-        }
-
-        return implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'Template', $template.'.php'));
+        return $path;
     }
 }

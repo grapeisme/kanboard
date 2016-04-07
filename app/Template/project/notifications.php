@@ -12,7 +12,7 @@
         <?= $this->form->checkboxes('notification_types', $types, $notifications) ?>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+            <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
             <?= t('or') ?>
             <?= $this->url->link(t('cancel'), 'project', 'show', array('project_id' => $project['id'])) ?>
         </div>

@@ -141,7 +141,6 @@ class Color extends Base
      * Get available colors
      *
      * @access public
-     * @param  bool $prepend
      * @return array
      */
     public function getList($prepend = false)
@@ -178,7 +177,7 @@ class Color extends Base
     }
 
     /**
-     * Get border color from string
+     * Get Bordercolor from string
      *
      * @access public
      * @param  string   $color_id   Color id

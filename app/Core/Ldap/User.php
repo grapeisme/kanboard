@@ -44,7 +44,8 @@ class User
      */
     public static function getUser(Client $client, $username)
     {
-        $self = new static(new Query($client));
+        $className = get_called_class();
+        $self = new $className(new Query($client));
         return $self->find($self->getLdapUserPattern($username));
     }
 
@@ -210,15 +211,14 @@ class User
      *
      * @access public
      * @param  string  $username
-     * @param  string  $filter
      * @return string
      */
-    public function getLdapUserPattern($username, $filter = LDAP_USER_FILTER)
+    public function getLdapUserPattern($username)
     {
-        if (! $filter) {
+        if (! LDAP_USER_FILTER) {
             throw new LogicException('LDAP user filter empty, check the parameter LDAP_USER_FILTER');
         }
 
-        return str_replace('%s', $username, $filter);
+        return sprintf(LDAP_USER_FILTER, $username);
     }
 }

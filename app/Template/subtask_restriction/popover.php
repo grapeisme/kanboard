@@ -10,7 +10,7 @@
     <?= $this->form->hidden('id', $subtask_inprogress) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-red"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-red">
         <?= t('or') ?>
         <a href="#" class="close-popover"><?= t('cancel') ?></a>
     </div>

@@ -19,6 +19,6 @@
     <?= $this->form->checkbox('append', t('Append filter (instead of replacement)'), 1) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue">
     </div>
 </form>

@@ -13,6 +13,22 @@ use Kanboard\Core\ExternalLink\ExternalLinkProviderNotFound;
 class TaskExternalLink extends Base
 {
     /**
+     * Creation form
+     *
+     * @access public
+     */
+    public function show()
+    {
+        $task = $this->getTask();
+
+        $this->response->html($this->helper->layout->task('task_external_link/show', array(
+            'links' => $this->taskExternalLink->getAll($task['id']),
+            'task' => $task,
+            'title' => t('List of external links'),
+        )));
+    }
+
+    /**
      * First creation form
      *
      * @access public
@@ -21,7 +37,7 @@ class TaskExternalLink extends Base
     {
         $task = $this->getTask();
 
-        $this->response->html($this->template->render('task_external_link/find', array(
+        $this->response->html($this->helper->layout->task('task_external_link/find', array(
             'values' => $values,
             'errors' => $errors,
             'task' => $task,
@@ -44,7 +60,7 @@ class TaskExternalLink extends Base
             $provider = $this->externalLinkManager->setUserInput($values)->find();
             $link = $provider->getLink();
 
-            $this->response->html($this->template->render('task_external_link/create', array(
+            $this->response->html($this->helper->layout->task('task_external_link/create', array(
                 'values' => array(
                     'title' => $link->getTitle(),
                     'url' => $link->getUrl(),
@@ -74,7 +90,7 @@ class TaskExternalLink extends Base
 
         if ($valid && $this->taskExternalLink->create($values)) {
             $this->flash->success(t('Link added successfully.'));
-            return $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])), true);
+            return $this->response->redirect($this->helper->url->to('TaskExternalLink', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])), true);
         }
 
         $this->edit($values, $errors);
@@ -100,7 +116,7 @@ class TaskExternalLink extends Base
 
         $provider = $this->externalLinkManager->getProvider($values['link_type']);
 
-        $this->response->html($this->template->render('task_external_link/edit', array(
+        $this->response->html($this->helper->layout->task('task_external_link/edit', array(
             'values' => $values,
             'errors' => $errors,
             'task' => $task,
@@ -121,7 +137,7 @@ class TaskExternalLink extends Base
 
         if ($valid && $this->taskExternalLink->update($values)) {
             $this->flash->success(t('Link updated successfully.'));
-            return $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])), true);
+            return $this->response->redirect($this->helper->url->to('TaskExternalLink', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])), true);
         }
 
         $this->edit($values, $errors);
@@ -142,7 +158,7 @@ class TaskExternalLink extends Base
             return $this->notfound();
         }
 
-        $this->response->html($this->template->render('task_external_link/remove', array(
+        $this->response->html($this->helper->layout->task('task_external_link/remove', array(
             'link' => $link,
             'task' => $task,
         )));
@@ -164,6 +180,6 @@ class TaskExternalLink extends Base
             $this->flash->failure(t('Unable to remove this link.'));
         }
 
-        $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])));
+        $this->response->redirect($this->helper->url->to('TaskExternalLink', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])));
     }
 }

@@ -22,6 +22,6 @@
     <?= $this->form->checkbox('cfd_include_closed_tasks', t('Include closed tasks in the cumulative flow diagram'), 1, $values['cfd_include_closed_tasks'] == 1) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue">
     </div>
 </form>

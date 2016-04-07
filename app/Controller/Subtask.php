@@ -11,6 +11,22 @@ namespace Kanboard\Controller;
 class Subtask extends Base
 {
     /**
+     * Show list of subtasks
+     */
+    public function show()
+    {
+        $task = $this->getTask();
+
+        $this->response->html($this->helper->layout->task('subtask/show', array(
+            'users_list' => $this->projectUserRole->getAssignableUsersList($task['project_id']),
+            'task' => $task,
+            'project' => $this->getProject(),
+            'subtasks' => $this->subtask->getAll($task['id']),
+            'editable' => true,
+        )));
+    }
+
+    /**
      * Creation form
      *
      * @access public
@@ -26,7 +42,7 @@ class Subtask extends Base
             );
         }
 
-        $this->response->html($this->template->render('subtask/create', array(
+        $this->response->html($this->helper->layout->task('subtask/create', array(
             'values' => $values,
             'errors' => $errors,
             'users_list' => $this->projectUserRole->getAssignableUsersList($task['project_id']),
@@ -73,7 +89,7 @@ class Subtask extends Base
         $task = $this->getTask();
         $subtask = $this->getSubTask();
 
-        $this->response->html($this->template->render('subtask/edit', array(
+        $this->response->html($this->helper->layout->task('subtask/edit', array(
             'values' => empty($values) ? $subtask : $values,
             'errors' => $errors,
             'users_list' => $this->projectUserRole->getAssignableUsersList($task['project_id']),
@@ -119,7 +135,7 @@ class Subtask extends Base
         $task = $this->getTask();
         $subtask = $this->getSubtask();
 
-        $this->response->html($this->template->render('subtask/remove', array(
+        $this->response->html($this->helper->layout->task('subtask/remove', array(
             'subtask' => $subtask,
             'task' => $task,
         )));

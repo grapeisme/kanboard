@@ -14,13 +14,17 @@ Each project has a different set of automatic actions, the configuration panel i
 Add a new action
 ----------------
 
-Click on the link **Add a new automatic action**.
+### Choose an action
 
-![Automatique action](screenshots/automatic-action-creation.png)
+![Choose action](http://kanboard.net/screenshots/documentation/project-automatic-action-step1.png)
 
-- Choose an action
-- Then, select an event
-- And finally, define the parameters
+### Choose an event
+
+![Choose an event](http://kanboard.net/screenshots/documentation/project-automatic-action-step2.png)
+
+### Define action parameters
+
+![Define parameters](http://kanboard.net/screenshots/documentation/project-automatic-action-step3.png)
 
 List of available actions
 -------------------------

@@ -41,7 +41,7 @@ class Client extends Base
      * @param  string  $name
      * @param  string  $subject
      * @param  string  $html
-     * @return Client
+     * @return EmailClient
      */
     public function send($email, $name, $subject, $html)
     {
@@ -70,7 +70,7 @@ class Client extends Base
      *
      * @access public
      * @param  string  $transport
-     * @return ClientInterface
+     * @return EmailClientInterface
      */
     public function getTransport($transport)
     {
@@ -83,7 +83,7 @@ class Client extends Base
      * @access public
      * @param  string  $transport
      * @param  string  $class
-     * @return Client
+     * @return EmailClient
      */
     public function setTransport($transport, $class)
     {

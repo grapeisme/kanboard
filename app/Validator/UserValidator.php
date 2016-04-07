@@ -17,10 +17,10 @@ class UserValidator extends Base
     /**
      * Common validation rules
      *
-     * @access protected
+     * @access private
      * @return array
      */
-    protected function commonValidationRules()
+    private function commonValidationRules()
     {
         return array(
             new Validators\MaxLength('role', t('The maximum length is %d characters', 25), 25),

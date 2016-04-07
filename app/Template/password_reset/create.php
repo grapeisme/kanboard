@@ -11,7 +11,7 @@
         <?= $this->form->text('captcha', array(), $errors, array('required')) ?>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-blue"><?= t('Change Password') ?></button>
+            <input type="submit" value="<?= t('Change Password') ?>" class="btn btn-blue"/>
         </div>
     </form>
 </div>

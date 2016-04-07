@@ -21,7 +21,6 @@ namespace Kanboard\Core\Session;
  * @property bool   $boardCollapsed
  * @property bool   $twoFactorBeforeCodeCalled
  * @property string $twoFactorSecret
- * @property string $oauthState
  */
 class SessionStorage
 {
